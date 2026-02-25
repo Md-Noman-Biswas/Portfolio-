@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 12 14 22;
+  --foreground: 236 240 248;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 45%),
+    rgb(var(--background));
+}
+
+.light {
+  --background: 248 250 252;
+  --foreground: 15 23 42;
+}
+
+.section-heading {
+  @apply text-2xl font-bold tracking-tight md:text-3xl;
+}
+
+.section-subheading {
+  @apply mt-3 max-w-2xl text-sm text-slate-300 md:text-base dark:text-slate-300 light:text-slate-600;
+}
+
+.surface {
+  @apply rounded-2xl border border-slate-800/70 bg-slate-900/50 backdrop-blur-md shadow-soft;
+}
+
+.light .surface {
+  @apply border-slate-200 bg-white/80;
+}
