@@ -1,114 +1,132 @@
 export const profile = {
-  name: 'Md Noman Biswas Sibly',
-  email: 'email@example.com',
-  github: 'https://github.com/placeholder',
+  name: 'MD NOMAN BISWAS SIBLY',
+  email: 'mdnomanbiswassibly@gmail.com',
+  github: 'https://github.com/Md-Noman-Biswas',
   linkedin: 'https://www.linkedin.com/in/md-noman-biswas-sibly/',
+  location: 'Jhenaidah District, Bangladesh',
+  headline: 'Electrical and Computer Engineering Student',
+  summary:
+    'Third-year Electrical and Computer Engineering student at RUET with a strong focus on deep learning and computer vision. Co-author of a Q1 Springer journal review article, with ongoing work in medical image classification and vision-language model surveys. Actively seeking research-oriented graduate opportunities in AI-driven systems.',
 };
 
 export const education = [
   {
     period: '2022 - Present',
-    institution: 'University Name Placeholder',
+    institution: 'Rajshahi University of Engineering & Technology (RUET)',
     program: 'B.Sc. in Electrical and Computer Engineering',
-    detail: 'Specialization in Artificial Intelligence and Machine Learning',
-    expectedGraduation: 'Expected Graduation: 2027',
+    detail: 'Rajshahi, Bangladesh',
+    expectedGraduation: 'Relevant Coursework: Machine Learning, Data Structures & Algorithms, DSP, Computer Architecture, Control Systems, Embedded Systems',
   },
 ];
 
 export const skills = {
   Programming: [
-    { name: 'C++', level: 88 },
+    { name: 'C++', level: 90 },
     { name: 'Python', level: 92 },
-    { name: 'SQL', level: 82 },
-    { name: 'Assembly', level: 67 },
+    { name: 'Embedded C', level: 84 },
+    { name: 'SQL', level: 80 },
   ],
   'ML/AI': [
-    { name: 'PyTorch', level: 86 },
-    { name: 'TensorFlow', level: 80 },
+    { name: 'TensorFlow', level: 86 },
     { name: 'Scikit-learn', level: 89 },
+    { name: 'YOLOv8', level: 82 },
+    { name: 'Computer Vision', level: 88 },
   ],
   Tools: [
-    { name: 'Git', level: 86 },
-    { name: 'Linux', level: 81 },
-    { name: 'VS Code', level: 90 },
-  ],
-  Databases: [
-    { name: 'PostgreSQL', level: 78 },
-    { name: 'MySQL', level: 79 },
+    { name: 'Git', level: 88 },
+    { name: 'Linux', level: 82 },
+    { name: 'Jupyter', level: 90 },
+    { name: 'Pandas / NumPy', level: 90 },
   ],
 };
 
 export const projects = [
   {
-    title: 'Digit Recognition Project',
+    title: 'ATmega Neural Network - Digit Recognition',
     description:
-      'Built a robust handwritten digit classification pipeline with end-to-end preprocessing, model experimentation, and deployment-ready evaluation metrics.',
-    technologies: ['Python', 'PyTorch', 'OpenCV'],
-    github: 'https://github.com/placeholder/digit-recognition',
-    demo: 'https://demo-placeholder.com/digit-recognition',
+      'Built a lightweight neural network running on an ATmega microcontroller to classify digits from a custom 4×4 dataset, optimizing computation and memory for embedded inference.',
+    technologies: ['Embedded C', 'Python', 'Microcontrollers'],
+    github: 'https://github.com/Md-Noman-Biswas/ATmega-NeuralNetwork-DigitRecognizer',
   },
   {
-    title: 'Database Backend Project',
+    title: 'Applied Machine Learning Projects',
     description:
-      'Designed and implemented a normalized relational backend with secure APIs and optimized query patterns for scalable educational workloads.',
-    technologies: ['PostgreSQL', 'SQL', 'Node.js'],
-    github: 'https://github.com/placeholder/database-backend',
+      'Implemented ML models for cardiovascular disease prediction, rainfall classification, breast cancer detection, and SONAR classification with preprocessing, feature engineering, and evaluation.',
+    technologies: ['Python', 'Scikit-learn', 'Pandas', 'NumPy'],
+    github: 'https://github.com/Md-Noman-Biswas/Machine-Learning-Projects',
   },
   {
-    title: 'Machine Learning Coursework Projects',
+    title: 'Football Club Logo Detection (YOLOv8)',
     description:
-      'A curated collection of academic ML projects featuring classification, regression, and representation learning experiments with detailed reports.',
-    technologies: ['Scikit-learn', 'TensorFlow', 'Jupyter'],
-    github: 'https://github.com/placeholder/ml-coursework',
-    demo: 'https://demo-placeholder.com/ml-coursework',
+      'Developed a YOLOv8-based object detection model to identify and classify football club logos, including dataset preparation and inference pipeline development.',
+    technologies: ['Python', 'YOLOv8', 'Computer Vision'],
+    github: 'https://github.com/Md-Noman-Biswas/Football-Club-Detection',
   },
 ];
 
-export const researchInterests = ['Self-Supervised Learning', 'Geospatial Analysis', 'Representation Learning', 'Computer Vision'];
+export const researchInterests = ['Deep Learning', 'Computer Vision', 'Vision-Language Models', 'Medical Image Analysis'];
 
 export const researchMetrics = [
-  { label: 'Models Trained', value: '27+' },
-  { label: 'Experiments Conducted', value: '180+' },
-  { label: 'Dataset Size', value: '2.8 TB multisource imagery' },
+  { label: 'Accepted Q1 Paper', value: '1 (Springer: Neural Computing and Applications)' },
+  { label: 'Ongoing Research Tracks', value: '2 (VLM Survey, Medical Imaging)' },
+  { label: 'Problems Solved', value: '1000+ (Codeforces/CP practice)' },
 ];
 
 export const researchPapers = [
   {
-    title: 'GeoContrast: Self-Supervised Representation Learning for Sparse-Label Remote Sensing',
-    venue: 'Under Review · 2026',
-    authors: 'Your Name, Collaborator Name',
+    title: 'A Comprehensive Review of Convolutional Neural Networks: Foundations, Enhancements, and Applications',
+    venue: 'Accepted · Neural Computing and Applications (Springer, Q1, IF 5.102)',
+    authors: 'Co-author',
     abstract:
-      'We evaluate contrastive pretraining strategies for multi-spectral and RGB satellite tiles and report gains in cross-region generalization under low-label constraints.',
-    doi: 'https://doi.org/10.0000/geocontrast.2026.001',
-    tags: ['SSL', 'Geospatial'],
+      'Comprehensive review covering CNN foundations, major architectural enhancements, and practical applications across modern AI tasks.',
+    tags: ['CV'],
     pdf: '/paper-placeholder.pdf',
   },
   {
-    title: 'Cross-Sensor Transfer for Land-Cover Mapping with Vision Foundation Models',
-    venue: 'Workshop Submission · 2025',
-    authors: 'Your Name, Collaborator Name, Advisor Name',
+    title: 'Vision-Language Model Review (CLIP, BLIP-2, LLaVA)',
+    venue: 'Ongoing Research',
+    authors: 'MD Noman Biswas Sibly',
     abstract:
-      'This study benchmarks feature adapters for transferring pretrained vision encoders from aerial RGB to SAR and multispectral targets while preserving semantic consistency.',
-    doi: 'https://doi.org/10.0000/crosssensor.2025.002',
-    tags: ['Geospatial', 'CV'],
+      'Ongoing survey and comparative analysis of representative vision-language model families, emphasizing architecture, alignment objectives, and evaluation patterns.',
+    tags: ['CV'],
     pdf: '/paper-placeholder.pdf',
   },
   {
-    title: 'Linear Probing Reliability in Domain-Shifted Geospatial Embeddings',
-    venue: 'Technical Report · 2024',
-    authors: 'Your Name',
+    title: 'CNN-Based Medical Image Classification for Gallbladder Disease',
+    venue: 'Ongoing Research',
+    authors: 'MD Noman Biswas Sibly',
     abstract:
-      'We analyze how linear evaluation rankings change under distribution shift and propose a reproducible protocol for reporting stable self-supervised model comparisons.',
-    doi: 'https://doi.org/10.0000/linprobe.2024.003',
-    tags: ['SSL', 'CV'],
+      'Investigating gallbladder disease classification with CNNs, including GAN-assisted augmentation and robustness-oriented validation strategies.',
+    tags: ['CV'],
     pdf: '/paper-placeholder.pdf',
   },
 ];
 
 export const researchTimeline = [
-  { year: '2024 Q1', event: 'Surveyed recent literature on self-supervised representation learning.' },
-  { year: '2024 Q3', event: 'Implemented baseline contrastive learning methods for remote sensing imagery.' },
-  { year: '2025 Q1', event: 'Evaluating geospatial transfer learning benchmarks across multimodal datasets.' },
+  { year: '2024', event: 'Co-authored a CNN review article accepted in Neural Computing and Applications (Springer, Q1).' },
+  { year: '2025', event: 'Started a comparative Vision-Language Model survey covering CLIP, BLIP-2, and LLaVA.' },
+  { year: '2025 - Present', event: 'Working on CNN-based gallbladder medical image classification with GAN-assisted augmentation.' },
 ];
 
-export const platforms = ['Codeforces', 'LeetCode', 'CodeChef'];
+export const platforms = ['Codeforces (Pupil)', 'LeetCode', 'CodeChef'];
+
+export const experiences = [
+  {
+    role: 'AI & Machine Learning Training',
+    organization: 'BDSET',
+    detail: 'Engaged in intensive hands-on AI/ML training focused on data-driven modeling and practical applications using Python and modern ML frameworks.',
+    period: 'Ongoing',
+  },
+  {
+    role: 'Programming Mentor',
+    organization: 'RUET Analytical Programming Lab',
+    detail: 'Taught programming fundamentals, algorithms, debugging, and problem-solving strategies.',
+    period: 'Past - Present',
+  },
+  {
+    role: 'Independent ML Developer',
+    organization: 'Open Source',
+    detail: 'Built and shared end-to-end ML/DL implementations using TensorFlow and Scikit-learn.',
+    period: 'Ongoing',
+  },
+];

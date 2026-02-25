@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import {
   education,
+  experiences,
   platforms,
   profile,
   projects,
@@ -27,10 +28,11 @@ const navItems = [
   { href: '#projects', label: 'Projects' },
   { href: '#research', label: 'Research' },
   { href: '#competitive-programming', label: 'CP' },
+  { href: '#experience', label: 'Experience' },
   { href: '#contact', label: 'Contact' },
 ];
 
-const researchTags = ['All', 'SSL', 'Geospatial', 'CV'] as const;
+const researchTags = ['All', 'CV'] as const;
 
 type ResearchTag = (typeof researchTags)[number];
 type SubmitStatus = { type: 'success' | 'error'; message: string } | null;
@@ -77,9 +79,9 @@ function HeroSection() {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.14),transparent_35%)]" />
 
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="mx-auto max-w-6xl">
-        <p className="text-sm uppercase tracking-[0.2em] text-cyan-300 light:text-cyan-700">Third-Year ECE Undergraduate</p>
+        <p className="text-sm uppercase tracking-[0.2em] text-cyan-300 light:text-cyan-700">{profile.headline}</p>
         <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">{profile.name}</h1>
-        <p className="mt-5 max-w-3xl text-lg text-slate-300 light:text-slate-600">AI &amp; Machine Learning Enthusiast | ECE Undergraduate</p>
+        <p className="mt-5 max-w-3xl text-lg text-slate-300 light:text-slate-600">{profile.location}</p>
 
         <div className="mt-8 flex flex-wrap gap-3.5">
           <a href="#projects" className="rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
@@ -102,10 +104,7 @@ function AboutSection() {
     <SectionWrapper id="about" title="About" subtitle="Research-driven engineer focused on turning theoretical machine learning ideas into practical systems.">
       <div className="section-stack">
         <article className="surface p-6">
-          <p className="text-slate-300 light:text-slate-600">
-            I am an Electrical and Computer Engineering student focused on representation learning, geospatial AI, and robust model evaluation. I enjoy building reproducible pipelines,
-            designing clean experiments, and translating findings into deployable systems.
-          </p>
+          <p className="text-slate-300 light:text-slate-600">{profile.summary}</p>
         </article>
 
         <div className="section-stack-sm">
@@ -259,15 +258,17 @@ function ResearchSection() {
                     <div className="mt-4 rounded-lg border border-slate-700/70 bg-slate-900/60 p-4 text-sm light:border-slate-300 light:bg-slate-100/80">
                       <p className="text-xs uppercase tracking-wide text-slate-400 light:text-slate-500">Citation Preview</p>
                       <p className="mt-2 text-slate-300 light:text-slate-700">
-                        {paper.authors} ({paper.venue.split('·').pop()?.trim()}). <em>{paper.title}</em>. DOI: {paper.doi.replace('https://doi.org/', '')}
+                        {paper.authors} ({paper.venue.split('·').pop()?.trim()}). <em>{paper.title}</em>{'doi' in paper && paper.doi ? `. DOI: ${paper.doi.replace('https://doi.org/', '')}` : '.'}
                       </p>
                     </div>
 
                     <p className="mt-3 text-sm text-slate-300 light:text-slate-600">{paper.abstract}</p>
                     <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
-                      <a href={paper.doi} className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" target="_blank" rel="noreferrer noopener">
-                        DOI Link <ExternalLink className="h-4 w-4" />
-                      </a>
+                      {'doi' in paper && paper.doi ? (
+                        <a href={paper.doi} className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" target="_blank" rel="noreferrer noopener">
+                          DOI Link <ExternalLink className="h-4 w-4" />
+                        </a>
+                      ) : null}
                       <button
                         type="button"
                         onClick={() => setActivePaperPdf(paper.pdf)}
@@ -329,8 +330,7 @@ function CompetitiveProgrammingSection() {
     >
       <article className="surface p-6">
         <p className="text-slate-300 light:text-slate-600">
-          I practice competitive programming to improve data structure fluency, complexity analysis, and disciplined debugging under time constraints. Current focus includes graph
-          theory, dynamic programming, and greedy optimization patterns.
+          I actively practice competitive programming to strengthen algorithms and problem-solving speed. I have solved 1000+ problems and achieved Pupil rank on Codeforces through regular contest participation.
         </p>
         <ul className="mt-5 flex flex-wrap gap-3" aria-label="Competitive programming platforms">
           {platforms.map((platform) => (
@@ -348,6 +348,24 @@ function CompetitiveProgrammingSection() {
  * Contact section handles form submission and status feedback while
  * preserving a fully semantic and keyboard-friendly form structure.
  */
+
+function ExperienceSection() {
+  return (
+    <SectionWrapper id="experience" title="Experience" subtitle="Training, mentoring, and independent project work in AI and software development.">
+      <div className="section-stack-sm">
+        {experiences.map((experience) => (
+          <article key={`${experience.role}-${experience.organization}`} className="surface p-6">
+            <p className="text-xs uppercase tracking-wide text-cyan-300 light:text-cyan-700">{experience.period}</p>
+            <h3 className="mt-2 text-lg font-semibold">{experience.role}</h3>
+            <p className="text-sm text-slate-400 light:text-slate-500">{experience.organization}</p>
+            <p className="mt-3 text-sm text-slate-300 light:text-slate-600">{experience.detail}</p>
+          </article>
+        ))}
+      </div>
+    </SectionWrapper>
+  );
+}
+
 function ContactSection() {
   const [status, setStatus] = useState<SubmitStatus>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -465,6 +483,7 @@ export function PortfolioShell() {
       <ProjectsSection />
       <ResearchSection />
       <CompetitiveProgrammingSection />
+      <ExperienceSection />
       <ContactSection />
     </main>
   );
