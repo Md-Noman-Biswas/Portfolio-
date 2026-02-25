@@ -1,8 +1,8 @@
 export const profile = {
-  name: 'Full Name Placeholder',
+  name: 'Md Noman Biswas Sibly',
   email: 'email@example.com',
   github: 'https://github.com/placeholder',
-  linkedin: 'https://linkedin.com/in/placeholder',
+  linkedin: 'https://www.linkedin.com/in/md-noman-biswas-sibly/',
 };
 
 export const education = [
