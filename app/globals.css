@@ -11,10 +11,23 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   color: rgb(var(--foreground));
-  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 45%),
-    rgb(var(--background));
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 45%), rgb(var(--background));
 }
 
 .light {
@@ -27,13 +40,30 @@ body {
 }
 
 .section-subheading {
-  @apply mt-3 max-w-2xl text-sm text-slate-300 md:text-base dark:text-slate-300 light:text-slate-600;
+  @apply mt-3 max-w-2xl text-sm text-slate-300 md:text-base light:text-slate-600;
 }
 
 .surface {
-  @apply rounded-2xl border border-slate-800/70 bg-slate-900/50 backdrop-blur-md shadow-soft;
+  @apply rounded-2xl border border-slate-800/70 bg-slate-900/50 shadow-soft backdrop-blur-md;
 }
 
 .light .surface {
   @apply border-slate-200 bg-white/80;
+}
+
+/* Reusable spacing utilities for consistent alignment across sections. */
+.section-stack {
+  @apply space-y-8;
+}
+
+.section-stack-sm {
+  @apply space-y-4;
+}
+
+.section-grid-2 {
+  @apply grid gap-6 md:grid-cols-2;
+}
+
+.section-grid-3 {
+  @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
 }
