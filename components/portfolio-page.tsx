@@ -1,13 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail, Menu } from 'lucide-react';
+import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import {
   education,
   platforms,
   profile,
+  researchMetrics,
+  researchPapers,
   projects,
   researchInterests,
   researchTimeline,
@@ -28,6 +30,13 @@ const navItems = [
 export function PortfolioPage() {
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedArea, setSelectedArea] = useState<'All' | 'SSL' | 'Geospatial' | 'CV'>('All');
+  const [activePaperPdf, setActivePaperPdf] = useState<string | null>(null);
+
+  const filteredPapers = useMemo(
+    () => researchPapers.filter((paper) => selectedArea === 'All' || paper.tags.includes(selectedArea)),
+    [selectedArea],
+  );
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -210,54 +219,110 @@ export function PortfolioPage() {
         </div>
       </SectionWrapper>
 
-      <SectionWrapper id="research" title="Research" subtitle="Academic exploration in modern representation learning and computer vision.">
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <SectionWrapper id="research" title="Research" subtitle="Publication-focused profile highlighting reproducible AI research output.">
+        <div className="space-y-6">
           <article className="surface p-6">
-            <h3 className="text-lg font-semibold">Research Interests</h3>
-            <ul className="mt-4 grid list-disc gap-2 pl-5 text-slate-300 light:text-slate-600 sm:grid-cols-2">
-              {researchInterests.map((interest) => (
-                <li key={interest}>{interest}</li>
-              ))}
-            </ul>
-
-            <div className="mt-6 rounded-xl border border-cyan-500/40 bg-cyan-500/5 p-5">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Ongoing Research Title Placeholder</h4>
-                <span className="rounded-full border border-cyan-400 px-3 py-1 text-xs text-cyan-300">Ongoing</span>
-              </div>
-              <p className="mt-3 text-sm text-slate-300 light:text-slate-700">
-                This ongoing work investigates robust feature extraction techniques from limited-label geospatial imagery through self-supervised objectives. The study aims to quantify
-                representation quality and transferability under domain shift constraints.
-              </p>
-              <p className="mt-3 text-sm text-slate-300 light:text-slate-700">
-                <strong>Methods:</strong> Contrastive Learning, Transfer Learning, Linear Evaluation Protocols
-              </p>
-              <p className="mt-1 text-sm text-slate-300 light:text-slate-700">
-                <strong>Tools:</strong> PyTorch, Weights &amp; Biases, QGIS
-              </p>
-              <a
-                href="/paper-placeholder.pdf"
-                download
-                className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-600 px-4 py-2 text-sm transition hover:border-cyan-400 hover:text-cyan-300"
-              >
-                Download Paper <Download className="h-4 w-4" />
-              </a>
-            </div>
-          </article>
-
-          <aside className="surface p-6">
-            <h3 className="text-lg font-semibold">Research Timeline</h3>
-            <div className="mt-4 space-y-4">
-              {researchTimeline.map((entry) => (
-                <div key={entry.year} className="border-l border-slate-700 pl-4 light:border-slate-300">
-                  <p className="text-xs uppercase tracking-wider text-cyan-300 light:text-cyan-700">{entry.year}</p>
-                  <p className="text-sm text-slate-300 light:text-slate-600">{entry.event}</p>
+            <h3 className="text-lg font-semibold">Research Metrics</h3>
+            <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              {researchMetrics.map((metric) => (
+                <div key={metric.label} className="rounded-xl border border-slate-700/80 bg-slate-900/50 p-4 light:border-slate-300 light:bg-slate-100/80">
+                  <p className="text-xs uppercase tracking-wider text-slate-400 light:text-slate-500">{metric.label}</p>
+                  <p className="mt-2 text-base font-semibold text-slate-100 light:text-slate-900">{metric.value}</p>
                 </div>
               ))}
             </div>
-          </aside>
+          </article>
+
+          <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+            <article className="surface p-6">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <h3 className="text-lg font-semibold">Selected Publications</h3>
+                <div className="flex flex-wrap gap-2" role="tablist" aria-label="Research area filters">
+                  {(['All', 'SSL', 'Geospatial', 'CV'] as const).map((area) => (
+                    <button
+                      key={area}
+                      type="button"
+                      onClick={() => setSelectedArea(area)}
+                      className={`rounded-full border px-3 py-1.5 text-xs transition ${
+                        selectedArea === area
+                          ? 'border-cyan-400 bg-cyan-500/15 text-cyan-200 light:text-cyan-800'
+                          : 'border-slate-700 text-slate-300 hover:border-cyan-500/60 light:border-slate-300 light:text-slate-700'
+                      }`}
+                    >
+                      {area}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <p className="mt-4 text-sm text-slate-300 light:text-slate-600">
+                Areas: {researchInterests.join(' · ')}
+              </p>
+
+              <div className="mt-6 space-y-4">
+                {filteredPapers.map((paper) => (
+                  <article key={paper.title} className="rounded-xl border border-slate-700/80 p-5 light:border-slate-300">
+                    <p className="text-xs uppercase tracking-wide text-slate-400 light:text-slate-500">{paper.venue}</p>
+                    <h4 className="mt-2 font-semibold leading-snug">{paper.title}</h4>
+                    <p className="mt-1 text-sm text-slate-400 light:text-slate-600">{paper.authors}</p>
+
+                    <div className="mt-4 rounded-lg border border-slate-700/70 bg-slate-900/60 p-4 text-sm light:border-slate-300 light:bg-slate-100/80">
+                      <p className="text-xs uppercase tracking-wide text-slate-400 light:text-slate-500">Citation Preview</p>
+                      <p className="mt-2 text-slate-300 light:text-slate-700">
+                        {paper.authors} ({paper.venue.split('·').pop()?.trim()}). <em>{paper.title}</em>. DOI: {paper.doi.replace('https://doi.org/', '')}
+                      </p>
+                    </div>
+
+                    <p className="mt-3 text-sm text-slate-300 light:text-slate-600">{paper.abstract}</p>
+                    <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
+                      <a href={paper.doi} className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" target="_blank" rel="noreferrer noopener">
+                        DOI Link <ExternalLink className="h-4 w-4" />
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setActivePaperPdf(paper.pdf)}
+                        className="inline-flex items-center gap-2 rounded-full border border-slate-600 px-3 py-1.5 transition hover:border-cyan-400 hover:text-cyan-300"
+                      >
+                        View PDF
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </article>
+
+            <aside className="surface p-6">
+              <h3 className="text-lg font-semibold">Academic Timeline</h3>
+              <div className="mt-5 space-y-5">
+                {researchTimeline.map((entry) => (
+                  <div key={entry.year} className="relative pl-8">
+                    <span className="absolute left-1 top-1.5 h-2.5 w-2.5 rounded-full bg-cyan-400" aria-hidden="true" />
+                    <span className="absolute left-2.5 top-5 h-[calc(100%+12px)] w-px bg-slate-700 last:hidden light:bg-slate-300" aria-hidden="true" />
+                    <p className="text-xs uppercase tracking-wider text-cyan-300 light:text-cyan-700">{entry.year}</p>
+                    <p className="mt-1 text-sm text-slate-300 light:text-slate-600">{entry.event}</p>
+                  </div>
+                ))}
+              </div>
+            </aside>
+          </div>
         </div>
       </SectionWrapper>
+
+      {activePaperPdf ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4" role="dialog" aria-modal="true" aria-label="Research paper PDF viewer">
+          <div className="relative h-[85vh] w-full max-w-5xl overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 light:border-slate-300 light:bg-white">
+            <button
+              type="button"
+              onClick={() => setActivePaperPdf(null)}
+              className="absolute right-3 top-3 z-10 rounded-full border border-slate-600 bg-slate-900/90 p-2 text-slate-200 transition hover:border-cyan-400 hover:text-cyan-300 light:bg-white"
+              aria-label="Close PDF viewer"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <iframe src={activePaperPdf} title="Research paper preview" className="h-full w-full" />
+          </div>
+        </div>
+      ) : null}
 
       <SectionWrapper
         id="competitive-programming"

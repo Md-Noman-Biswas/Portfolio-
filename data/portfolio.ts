@@ -66,6 +66,45 @@ export const projects = [
 
 export const researchInterests = ['Self-Supervised Learning', 'Geospatial Analysis', 'Representation Learning', 'Computer Vision'];
 
+export const researchMetrics = [
+  { label: 'Models Trained', value: '27+' },
+  { label: 'Experiments Conducted', value: '180+' },
+  { label: 'Dataset Size', value: '2.8 TB multisource imagery' },
+];
+
+export const researchPapers = [
+  {
+    title: 'GeoContrast: Self-Supervised Representation Learning for Sparse-Label Remote Sensing',
+    venue: 'Under Review · 2026',
+    authors: 'Your Name, Collaborator Name',
+    abstract:
+      'We evaluate contrastive pretraining strategies for multi-spectral and RGB satellite tiles and report gains in cross-region generalization under low-label constraints.',
+    doi: 'https://doi.org/10.0000/geocontrast.2026.001',
+    tags: ['SSL', 'Geospatial'],
+    pdf: '/paper-placeholder.pdf',
+  },
+  {
+    title: 'Cross-Sensor Transfer for Land-Cover Mapping with Vision Foundation Models',
+    venue: 'Workshop Submission · 2025',
+    authors: 'Your Name, Collaborator Name, Advisor Name',
+    abstract:
+      'This study benchmarks feature adapters for transferring pretrained vision encoders from aerial RGB to SAR and multispectral targets while preserving semantic consistency.',
+    doi: 'https://doi.org/10.0000/crosssensor.2025.002',
+    tags: ['Geospatial', 'CV'],
+    pdf: '/paper-placeholder.pdf',
+  },
+  {
+    title: 'Linear Probing Reliability in Domain-Shifted Geospatial Embeddings',
+    venue: 'Technical Report · 2024',
+    authors: 'Your Name',
+    abstract:
+      'We analyze how linear evaluation rankings change under distribution shift and propose a reproducible protocol for reporting stable self-supervised model comparisons.',
+    doi: 'https://doi.org/10.0000/linprobe.2024.003',
+    tags: ['SSL', 'CV'],
+    pdf: '/paper-placeholder.pdf',
+  },
+];
+
 export const researchTimeline = [
   { year: '2024 Q1', event: 'Surveyed recent literature on self-supervised representation learning.' },
   { year: '2024 Q3', event: 'Implemented baseline contrastive learning methods for remote sensing imagery.' },
