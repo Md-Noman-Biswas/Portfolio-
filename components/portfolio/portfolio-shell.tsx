@@ -33,7 +33,6 @@ const navItems = [
 const researchTags = ['All', 'SSL', 'Geospatial', 'CV'] as const;
 
 type ResearchTag = (typeof researchTags)[number];
-
 type SubmitStatus = { type: 'success' | 'error'; message: string } | null;
 
 function HeaderNav() {
@@ -43,6 +42,7 @@ function HeaderNav() {
         <Link href="#hero" className="text-sm font-semibold tracking-[0.2em] text-cyan-300 light:text-cyan-700">
           ECE | AI
         </Link>
+
         <ul className="hidden items-center gap-6 md:flex" aria-label="Primary sections">
           {navItems.map((item) => (
             <li key={item.href}>
@@ -52,6 +52,7 @@ function HeaderNav() {
             </li>
           ))}
         </ul>
+
         <ThemeToggle />
       </nav>
 
@@ -72,13 +73,15 @@ function HeaderNav() {
 
 function HeroSection() {
   return (
-    <section id="hero" className="relative isolate overflow-hidden px-4 pb-20 pt-24 sm:px-8">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.18),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.16),transparent_35%)]" />
-      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="mx-auto max-w-6xl">
+    <section id="hero" className="relative isolate overflow-hidden px-4 pb-18 pt-22 sm:px-8">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.14),transparent_35%)]" />
+
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="mx-auto max-w-6xl">
         <p className="text-sm uppercase tracking-[0.2em] text-cyan-300 light:text-cyan-700">Third-Year ECE Undergraduate</p>
         <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">{profile.name}</h1>
-        <p className="mt-6 max-w-3xl text-lg text-slate-300 light:text-slate-600">AI &amp; Machine Learning Enthusiast | ECE Undergraduate</p>
-        <div className="mt-10 flex flex-wrap gap-4">
+        <p className="mt-5 max-w-3xl text-lg text-slate-300 light:text-slate-600">AI &amp; Machine Learning Enthusiast | ECE Undergraduate</p>
+
+        <div className="mt-8 flex flex-wrap gap-3.5">
           <a href="#projects" className="rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
             View Projects
           </a>
@@ -97,23 +100,25 @@ function HeroSection() {
 function AboutSection() {
   return (
     <SectionWrapper id="about" title="About" subtitle="Research-driven engineer focused on turning theoretical machine learning ideas into practical systems.">
-      <article className="surface p-6">
-        <p className="text-slate-300 light:text-slate-600">
-          I am an Electrical and Computer Engineering student focused on representation learning, geospatial AI, and robust model evaluation. I enjoy building reproducible pipelines,
-          designing clean experiments, and translating findings into deployable systems.
-        </p>
-      </article>
+      <div className="section-stack">
+        <article className="surface p-6">
+          <p className="text-slate-300 light:text-slate-600">
+            I am an Electrical and Computer Engineering student focused on representation learning, geospatial AI, and robust model evaluation. I enjoy building reproducible pipelines,
+            designing clean experiments, and translating findings into deployable systems.
+          </p>
+        </article>
 
-      <div className="mt-6 grid gap-4">
-        {education.map((item) => (
-          <article key={item.institution} className="surface p-6">
-            <p className="text-xs uppercase tracking-wide text-cyan-300 light:text-cyan-700">{item.period}</p>
-            <h3 className="mt-2 text-lg font-semibold">{item.institution}</h3>
-            <p className="mt-2 text-slate-300 light:text-slate-600">{item.program}</p>
-            <p className="text-sm text-slate-400 light:text-slate-500">{item.detail}</p>
-            <p className="mt-2 text-sm text-slate-300 light:text-slate-600">{item.expectedGraduation}</p>
-          </article>
-        ))}
+        <div className="section-stack-sm">
+          {education.map((item) => (
+            <article key={item.institution} className="surface p-6">
+              <p className="text-xs uppercase tracking-wide text-cyan-300 light:text-cyan-700">{item.period}</p>
+              <h3 className="mt-2 text-lg font-semibold">{item.institution}</h3>
+              <p className="mt-2 text-slate-300 light:text-slate-600">{item.program}</p>
+              <p className="text-sm text-slate-400 light:text-slate-500">{item.detail}</p>
+              <p className="mt-2 text-sm text-slate-300 light:text-slate-600">{item.expectedGraduation}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </SectionWrapper>
   );
@@ -122,11 +127,11 @@ function AboutSection() {
 function SkillsSection() {
   return (
     <SectionWrapper id="skills" title="Skills" subtitle="Core technical stack used across coursework, research, and production prototypes.">
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="section-grid-2">
         {Object.entries(skills).map(([category, items]) => (
           <article key={category} className="surface p-6">
             <h3 className="text-lg font-semibold">{category}</h3>
-            <ul className="mt-5 space-y-4" aria-label={`${category} skills`}>
+            <ul className="mt-4 space-y-4" aria-label={`${category} skills`}>
               {items.map((skill) => (
                 <li key={skill.name}>
                   <div className="mb-1 flex items-center justify-between text-sm">
@@ -149,7 +154,7 @@ function SkillsSection() {
 function ProjectsSection() {
   return (
     <SectionWrapper id="projects" title="Projects" subtitle="Selected work in machine learning systems and software engineering.">
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="section-grid-3">
         {projects.map((project) => (
           <article key={project.title} className="surface flex h-full flex-col p-6">
             <h3 className="text-lg font-semibold">{project.title}</h3>
@@ -161,7 +166,7 @@ function ProjectsSection() {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 flex gap-4 text-sm">
+            <div className="mt-4 flex gap-4 text-sm">
               <a className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" href={project.github} target="_blank" rel="noreferrer noopener">
                 <Github className="h-4 w-4" /> GitHub
               </a>
@@ -205,7 +210,7 @@ function ResearchSection() {
   return (
     <>
       <SectionWrapper id="research" title="Research" subtitle="Publication-focused profile highlighting reproducible AI research output.">
-        <div className="space-y-6">
+        <div className="section-stack">
           <article className="surface p-6">
             <h3 className="text-lg font-semibold">Research Metrics</h3>
             <ul className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -244,7 +249,7 @@ function ResearchSection() {
 
               <p className="mt-4 text-sm text-slate-300 light:text-slate-600">Areas: {researchInterests.join(' · ')}</p>
 
-              <div className="mt-6 space-y-4">
+              <div className="mt-5 space-y-4">
                 {filteredPapers.map((paper) => (
                   <article key={paper.title} className="rounded-xl border border-slate-700/80 p-5 light:border-slate-300">
                     <p className="text-xs uppercase tracking-wide text-slate-400 light:text-slate-500">{paper.venue}</p>
@@ -389,7 +394,7 @@ function ContactSection() {
           <a href={`mailto:${profile.email}`} className="mt-4 flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700">
             <Mail className="h-4 w-4" /> {profile.email}
           </a>
-          <div className="mt-5 flex gap-4">
+          <div className="mt-4 flex gap-4">
             <a href={profile.linkedin} className="rounded-full border border-slate-700 p-2 hover:border-cyan-400" aria-label="LinkedIn profile" target="_blank" rel="noreferrer noopener">
               <Linkedin className="h-5 w-5" />
             </a>
@@ -448,7 +453,7 @@ function ContactSection() {
 
 export function PortfolioShell() {
   return (
-    <main className="pb-10">
+    <main className="pb-12">
       <a href="#hero" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-cyan-500 focus:px-3 focus:py-2 focus:text-slate-950">
         Skip to content
       </a>

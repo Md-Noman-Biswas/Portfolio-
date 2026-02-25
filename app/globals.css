@@ -50,3 +50,20 @@ body {
 .light .surface {
   @apply border-slate-200 bg-white/80;
 }
+
+/* Reusable spacing utilities for consistent alignment across sections. */
+.section-stack {
+  @apply space-y-8;
+}
+
+.section-stack-sm {
+  @apply space-y-4;
+}
+
+.section-grid-2 {
+  @apply grid gap-6 md:grid-cols-2;
+}
+
+.section-grid-3 {
+  @apply grid gap-6 md:grid-cols-2 xl:grid-cols-3;
+}
