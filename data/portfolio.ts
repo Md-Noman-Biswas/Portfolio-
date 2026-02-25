@@ -1,3 +1,10 @@
+export const profile = {
+  name: 'Full Name Placeholder',
+  email: 'email@example.com',
+  github: 'https://github.com/placeholder',
+  linkedin: 'https://linkedin.com/in/placeholder',
+};
+
 export const education = [
   {
     period: '2022 - Present',
@@ -56,6 +63,8 @@ export const projects = [
     demo: 'https://demo-placeholder.com/ml-coursework',
   },
 ];
+
+export const researchInterests = ['Self-Supervised Learning', 'Geospatial Analysis', 'Representation Learning', 'Computer Vision'];
 
 export const researchTimeline = [
   { year: '2024 Q1', event: 'Surveyed recent literature on self-supervised representation learning.' },

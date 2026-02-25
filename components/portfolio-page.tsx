@@ -1,10 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, Download, ExternalLink, Github, Linkedin, Mail, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
-import { education, platforms, projects, researchTimeline, skills } from '@/data/portfolio';
+import {
+  education,
+  platforms,
+  profile,
+  projects,
+  researchInterests,
+  researchTimeline,
+  skills,
+} from '@/data/portfolio';
 import { SectionWrapper } from './section-wrapper';
 import { ThemeToggle } from './theme-toggle';
 
@@ -18,32 +26,53 @@ const navItems = [
 ];
 
 export function PortfolioPage() {
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    setStatus(null);
+
     const formData = new FormData(event.currentTarget);
 
     const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
+      name: String(formData.get('name') ?? ''),
+      email: String(formData.get('email') ?? ''),
+      message: String(formData.get('message') ?? ''),
     };
 
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    setStatus(response.ok ? 'Message sent successfully.' : 'Failed to send message.');
-    if (response.ok) event.currentTarget.reset();
+      const data = (await response.json()) as { error?: string; message?: string };
+
+      if (!response.ok) {
+        setStatus({ type: 'error', message: data.error ?? 'Failed to send message. Please try again.' });
+        return;
+      }
+
+      setStatus({ type: 'success', message: data.message ?? 'Message sent successfully.' });
+      event.currentTarget.reset();
+    } catch {
+      setStatus({ type: 'error', message: 'Network error while sending message. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <main className="pb-10">
+      <a href="#hero" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-cyan-500 focus:px-3 focus:py-2 focus:text-slate-950">
+        Skip to content
+      </a>
+
       <header className="sticky top-0 z-40 border-b border-slate-800/70 bg-slate-950/70 backdrop-blur-lg light:border-slate-200 light:bg-white/80">
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-8">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-8" aria-label="Main navigation">
           <Link href="#hero" className="text-sm font-semibold tracking-[0.2em] text-cyan-300 light:text-cyan-700">
             ECE | AI
           </Link>
@@ -54,23 +83,33 @@ export function PortfolioPage() {
               </a>
             ))}
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="rounded-full border border-slate-700/80 p-2 md:hidden"
+              onClick={() => document.getElementById('mobile-nav')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              aria-label="Open section navigation"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <ThemeToggle />
+          </div>
         </nav>
+        <div id="mobile-nav" className="mx-auto flex max-w-6xl gap-3 overflow-x-auto px-4 pb-3 md:hidden sm:px-8">
+          {navItems.map((item) => (
+            <a key={`mobile-${item.href}`} href={item.href} className="whitespace-nowrap rounded-full border border-slate-700 px-3 py-1.5 text-xs text-slate-300 light:border-slate-300 light:text-slate-700">
+              {item.label}
+            </a>
+          ))}
+        </div>
       </header>
 
       <section id="hero" className="relative isolate overflow-hidden px-4 pb-20 pt-24 sm:px-8">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.2),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.2),transparent_35%)] animate-float" />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="mx-auto max-w-6xl"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mx-auto max-w-6xl">
           <p className="text-sm uppercase tracking-[0.2em] text-cyan-300 light:text-cyan-700">Third-Year ECE Undergraduate</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">Full Name Placeholder</h1>
-          <p className="mt-6 max-w-3xl text-lg text-slate-300 light:text-slate-600">
-            AI &amp; Machine Learning Enthusiast | ECE Undergraduate
-          </p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">{profile.name}</h1>
+          <p className="mt-6 max-w-3xl text-lg text-slate-300 light:text-slate-600">AI &amp; Machine Learning Enthusiast | ECE Undergraduate</p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a href="#projects" className="rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
               View Projects
@@ -78,18 +117,14 @@ export function PortfolioPage() {
             <a href="#research" className="rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold transition hover:border-cyan-400 hover:text-cyan-300 light:border-slate-300 light:hover:text-cyan-700">
               View Research
             </a>
-            <a href="/resume.pdf" className="inline-flex items-center gap-2 rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold transition hover:border-cyan-400 hover:text-cyan-300 light:border-slate-300 light:hover:text-cyan-700">
+            <a href="/resume.pdf" download className="inline-flex items-center gap-2 rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold transition hover:border-cyan-400 hover:text-cyan-300 light:border-slate-300 light:hover:text-cyan-700">
               Download Resume <Download className="h-4 w-4" />
             </a>
           </div>
         </motion.div>
       </section>
 
-      <SectionWrapper
-        id="about"
-        title="About"
-        subtitle="Research-driven engineer focused on turning theoretical machine learning into practical systems with measurable impact."
-      >
+      <SectionWrapper id="about" title="About" subtitle="Research-driven engineer focused on turning theoretical machine learning into practical systems with measurable impact.">
         <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
           <article className="surface p-6 text-slate-200 light:text-slate-700">
             <p>
@@ -130,7 +165,7 @@ export function PortfolioPage() {
                       <span>{skill.name}</span>
                       <span className="text-slate-400">{skill.level}%</span>
                     </div>
-                    <div className="h-2 rounded-full bg-slate-800 light:bg-slate-200">
+                    <div className="h-2 rounded-full bg-slate-800 light:bg-slate-200" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={skill.level} aria-label={`${skill.name} proficiency`}>
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.level}%` }}
@@ -161,11 +196,11 @@ export function PortfolioPage() {
                 ))}
               </div>
               <div className="mt-5 flex gap-4 text-sm">
-                <a className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" href={project.github} target="_blank" rel="noreferrer">
+                <a className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" href={project.github} target="_blank" rel="noreferrer noopener">
                   <Github className="h-4 w-4" /> GitHub
                 </a>
                 {project.demo ? (
-                  <a className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" href={project.demo} target="_blank" rel="noreferrer">
+                  <a className="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700" href={project.demo} target="_blank" rel="noreferrer noopener">
                     <ExternalLink className="h-4 w-4" /> Live Demo
                   </a>
                 ) : null}
@@ -180,10 +215,9 @@ export function PortfolioPage() {
           <article className="surface p-6">
             <h3 className="text-lg font-semibold">Research Interests</h3>
             <ul className="mt-4 grid list-disc gap-2 pl-5 text-slate-300 light:text-slate-600 sm:grid-cols-2">
-              <li>Self-Supervised Learning</li>
-              <li>Geospatial Analysis</li>
-              <li>Representation Learning</li>
-              <li>Computer Vision</li>
+              {researchInterests.map((interest) => (
+                <li key={interest}>{interest}</li>
+              ))}
             </ul>
 
             <div className="mt-6 rounded-xl border border-cyan-500/40 bg-cyan-500/5 p-5">
@@ -203,6 +237,7 @@ export function PortfolioPage() {
               </p>
               <a
                 href="/paper-placeholder.pdf"
+                download
                 className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-600 px-4 py-2 text-sm transition hover:border-cyan-400 hover:text-cyan-300"
               >
                 Download Paper <Download className="h-4 w-4" />
@@ -248,46 +283,55 @@ export function PortfolioPage() {
         <div className="grid gap-6 md:grid-cols-[1fr_1.2fr]">
           <article className="surface p-6">
             <h3 className="text-lg font-semibold">Reach Out</h3>
-            <a href="mailto:email@example.com" className="mt-4 flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700">
-              <Mail className="h-4 w-4" /> email@example.com
+            <a href={`mailto:${profile.email}`} className="mt-4 flex items-center gap-2 text-cyan-300 hover:text-cyan-200 light:text-cyan-700">
+              <Mail className="h-4 w-4" /> {profile.email}
             </a>
             <div className="mt-5 flex gap-4">
-              <a href="https://linkedin.com/in/placeholder" className="rounded-full border border-slate-700 p-2 hover:border-cyan-400" aria-label="LinkedIn profile">
+              <a href={profile.linkedin} className="rounded-full border border-slate-700 p-2 hover:border-cyan-400" aria-label="LinkedIn profile" target="_blank" rel="noreferrer noopener">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="https://github.com/placeholder" className="rounded-full border border-slate-700 p-2 hover:border-cyan-400" aria-label="GitHub profile">
+              <a href={profile.github} className="rounded-full border border-slate-700 p-2 hover:border-cyan-400" aria-label="GitHub profile" target="_blank" rel="noreferrer noopener">
                 <Github className="h-5 w-5" />
               </a>
             </div>
           </article>
 
-          <form onSubmit={onSubmit} className="surface space-y-4 p-6">
-            <label className="block text-sm">
+          <form onSubmit={onSubmit} className="surface space-y-4 p-6" noValidate>
+            <label className="block text-sm" htmlFor="name">
               Name
-              <input required name="name" className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white" />
             </label>
-            <label className="block text-sm">
+            <input id="name" required name="name" maxLength={80} className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white" />
+            <label className="block text-sm" htmlFor="email">
               Email
-              <input
-                required
-                name="email"
-                type="email"
-                className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white"
-              />
             </label>
-            <label className="block text-sm">
+            <input
+              id="email"
+              required
+              name="email"
+              type="email"
+              maxLength={120}
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white"
+            />
+            <label className="block text-sm" htmlFor="message">
               Message
-              <textarea
-                required
-                name="message"
-                rows={4}
-                className="mt-1 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white"
-              />
             </label>
-            <button className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400" type="submit">
-              Send Message <ArrowRight className="h-4 w-4" />
+            <textarea
+              id="message"
+              required
+              name="message"
+              rows={4}
+              minLength={10}
+              maxLength={1200}
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 outline-none focus:border-cyan-400 light:border-slate-300 light:bg-white"
+            />
+            <button disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-70" type="submit">
+              {isSubmitting ? 'Sending...' : 'Send Message'} <ArrowRight className="h-4 w-4" />
             </button>
-            {status ? <p className="text-sm text-cyan-300 light:text-cyan-700">{status}</p> : null}
+            {status ? (
+              <p className={`text-sm ${status.type === 'success' ? 'text-cyan-300 light:text-cyan-700' : 'text-rose-300 light:text-rose-600'}`} role="status" aria-live="polite">
+                {status.message}
+              </p>
+            ) : null}
           </form>
         </div>
       </SectionWrapper>

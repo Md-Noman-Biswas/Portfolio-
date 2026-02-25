@@ -5,6 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://portfolio.example.com'),
   title: 'Full Name Placeholder | AI & ML Portfolio',
   description:
     'Professional portfolio for a third-year Electrical and Computer Engineering undergraduate specializing in AI and Machine Learning.',
@@ -13,6 +14,12 @@ export const metadata: Metadata = {
     title: 'Full Name Placeholder | AI & ML Portfolio',
     description: 'Research-focused portfolio website with projects, skills, and ongoing academic work.',
     type: 'website',
+    url: 'https://portfolio.example.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Full Name Placeholder | AI & ML Portfolio',
+    description: 'Research-focused portfolio with projects, research interests, and contact information.',
   },
 };
 
