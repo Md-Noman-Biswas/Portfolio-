@@ -1,7 +1,7 @@
 'use client';
 
 import { Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(true);
@@ -17,18 +17,20 @@ export function ThemeToggle() {
     setIsMounted(true);
   }, []);
 
-  const toggleTheme = () => {
-    const next = !isDark;
-
-    setIsDark(next);
-    document.documentElement.classList.toggle('light', !next);
-    localStorage.setItem('theme', next ? 'dark' : 'light');
-  };
+  const toggleTheme = useCallback(() => {
+    setIsDark((current) => {
+      const next = !current;
+      document.documentElement.classList.toggle('light', !next);
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      return next;
+    });
+  }, []);
 
   return (
     <button
       onClick={toggleTheme}
       type="button"
+      aria-pressed={isDark}
       className="rounded-full border border-slate-700/80 p-2 transition hover:border-cyan-400 hover:text-cyan-300 light:border-slate-300 light:hover:text-cyan-700"
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
     >
