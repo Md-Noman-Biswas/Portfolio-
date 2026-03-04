@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 12 14 22;
+  --foreground: 236 240 248;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: rgb(var(--foreground));
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.06), transparent 42%),
+    radial-gradient(circle at 80% 10%, rgba(59, 130, 246, 0.06), transparent 30%),
+    rgb(var(--background));
+}
+
+.light {
+  --background: 248 250 252;
+  --foreground: 15 23 42;
+}
+
+.section-heading {
+  @apply font-serif text-3xl font-semibold tracking-tight md:text-4xl;
+}
+
+.section-subheading {
+  @apply mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base light:text-slate-600;
+}
+
+.surface {
+  @apply rounded-2xl border border-white/10 bg-white/5 shadow-soft backdrop-blur-md transition duration-300;
+}
+
+.glass-card {
+  @apply rounded-2xl border border-white/15 bg-white/[0.06] shadow-soft backdrop-blur-xl;
+}
+
+.light .surface,
+.light .glass-card {
+  @apply border-slate-200/80 bg-white/80;
+}
+
+.card-hover {
+  @apply transition duration-300 hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-[0_18px_40px_-22px_rgba(34,211,238,0.45)];
+}
+
+.hero-aurora {
+  background: radial-gradient(circle at 18% 22%, rgba(34, 211, 238, 0.22), transparent 40%),
+    radial-gradient(circle at 78% 0%, rgba(59, 130, 246, 0.2), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(14, 165, 233, 0.1), transparent 42%);
+  animation: aurora 14s ease-in-out infinite alternate;
+}
+
+@keyframes aurora {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.08) translateY(-10px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-aurora {
+    animation: none;
+  }
+}
